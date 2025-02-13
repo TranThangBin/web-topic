@@ -1,1 +1,19 @@
-@import "tailwindcss"
+@import "tailwindcss";
+
+.bg-banner {
+    background:
+        linear-gradient(
+            to right,
+            #495867,
+            rgba(73, 88, 103, 0.8) 60%,
+            rgba(162, 135, 192, 0.4)
+        ),
+        url("./images/app-banner.png") 100% 0 no-repeat,
+        linear-gradient(to right, #343f49, #8866ae);
+}
+
+.bg-promo {
+    background-image: url("./images/rXVYBA.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}

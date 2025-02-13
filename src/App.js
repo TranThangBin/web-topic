@@ -1,9 +1,368 @@
+import { BannerSection, PromoSection } from "./components/ui/banner";
+import { FeaturedBundle, GameCollection } from "./components/ui/main-content";
 import { NavBar } from "./components/ui/nav-bar";
+import { Sidebar } from "./components/ui/sidebar";
+
+const latestFeaturedGames = [
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+];
+
+const freshGames = [
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+];
+
+const moreFeaturedGames = [
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+];
 
 function App() {
     return (
         <>
             <NavBar />
+            <main className="mt-16 grid grid-cols-[auto_1fr]">
+                <Sidebar />
+                <div className="ml-72 flex flex-col">
+                    <BannerSection />
+                    <PromoSection
+                        embedUrl="https://www.youtube.com/embed/_qu03DZRDqc"
+                        gameDataProp={{
+                            title: "Pretend it's not There",
+                            description:
+                                "Pretend that you can't see the monster, that may be the only way to survive.",
+                            screenshotUrls: [
+                                "/images/80awOh.png",
+                                "/images/bT68k6.png",
+                                "/images/4yI3I9.png",
+                            ],
+                            price: "FREE",
+                            platforms: ["windows", "mac"],
+                            tags: ["First-Person", "Horror", "Atmospheric"],
+                        }}
+                    />
+                    <FeaturedBundle />
+                    <GameCollection
+                        heading="Latest Featured Games"
+                        games={latestFeaturedGames}
+                    />
+                    <GameCollection heading="Fresh Games" games={freshGames} />
+                    <GameCollection
+                        heading="More Featured Games"
+                        games={moreFeaturedGames}
+                    />
+                </div>
+            </main>
         </>
     );
 }
