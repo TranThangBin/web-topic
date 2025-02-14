@@ -3,6 +3,7 @@ import ForestFloors from "../../images/forest_floors.png";
 import SuperExtra from "../../images/super_extra.png";
 import ToCare from "../../images/to_care.png";
 import SevenSeconds from "../../images/7_seconds.png";
+import "../../fontawesome-free-6.7.2-web/css/all.min.css";
 
 export function FeaturedBundle() {
     return (
@@ -68,17 +69,21 @@ export function FeaturedBundle() {
     );
 }
 
-export function GameCollection({ heading, games }) {
+export function GameCollection({ heading, games, haveViewAll }) {
     return (
         <section className="p-8">
             <div className="flex items-center gap-4">
                 <h2 className="text-xl font-bold">{heading}</h2>
-                <a
-                    className="rounded-md border px-2 py-1 text-sm font-semibold text-red-600"
-                    href="#"
-                >
-                    View all <i className="fa-solid fa-arrow-right-long" />
-                </a>
+                {haveViewAll ? (
+                    <a
+                        className="rounded-md border px-2 py-1 text-sm font-semibold text-red-600"
+                        href="#"
+                    >
+                        View all <i className="fa-solid fa-arrow-right-long" />
+                    </a>
+                ) : (
+                    <></>
+                )}
             </div>
             <ul className="my-4 grid grid-cols-[repeat(auto-fit,minmax(14rem,1fr))] gap-4">
                 {games.map((game) => (
@@ -111,5 +116,60 @@ function GameItem({ icon, title, price, tags, description }) {
             </div>
             <span className="text-gray-600">{description}</span>
         </li>
+    );
+}
+
+export function RecommendedForYou({ tags, games }) {
+    return (
+        <section className="flex flex-col gap-2 border-l-2 border-l-gray-300 bg-gray-200 p-8">
+            <div className="flex items-center gap-4">
+                <h2 className="text-xl font-bold">Recommended For You</h2>
+                <a
+                    className="rounded-md border px-2 py-1 text-sm font-semibold text-red-600"
+                    href="#"
+                >
+                    View all <i className="fa-solid fa-arrow-right-long" />
+                </a>
+            </div>
+            <div className="text-gray-600">
+                Based on things you've purchased, downloaded, and rated
+            </div>
+            <div className="flex items-center gap-2">
+                <i className="fa-solid fa-tag text-lg" />
+                {tags.map((tag) => (
+                    <a
+                        className="rounded-md border border-gray-400 px-2 py-1 text-sm"
+                        href="#"
+                    >
+                        {tag}
+                    </a>
+                ))}
+            </div>
+            <ul className="flex gap-4">
+                {games.map((game) => (
+                    <GameItem {...game} />
+                ))}
+            </ul>
+        </section>
+    );
+}
+
+export function SeeMoreSection() {
+    return (
+        <section className="flex justify-center gap-4 pb-8 font-bold">
+            Don't see anything you like
+            <a
+                className="rounded-md border px-2 py-1 text-sm font-semibold text-red-600"
+                href="#"
+            >
+                View all games <i className="fa-solid fa-arrow-right-long" />
+            </a>
+            <a
+                className="rounded-md border px-2 py-1 text-sm font-semibold text-red-600"
+                href="#"
+            >
+                View something random <i className="fa-solid fa-shuffle" />
+            </a>
+        </section>
     );
 }

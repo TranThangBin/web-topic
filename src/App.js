@@ -1,5 +1,11 @@
 import { BannerSection, PromoSection } from "./components/ui/banner";
-import { FeaturedBundle, GameCollection } from "./components/ui/main-content";
+import { Footer } from "./components/ui/footer";
+import {
+    FeaturedBundle,
+    GameCollection,
+    RecommendedForYou,
+    SeeMoreSection,
+} from "./components/ui/main-content";
 import { NavBar } from "./components/ui/nav-bar";
 import { Sidebar } from "./components/ui/sidebar";
 
@@ -219,6 +225,57 @@ const freshGames = [
     },
 ];
 
+const recommendedTags = [
+    "No AI",
+    "Horror",
+    "2D",
+    "Singleplayer",
+    "Pixel Art",
+    "Adventure",
+    "Visual Novel",
+    "Short",
+    "3D",
+    "Retro",
+];
+
+const recommendedForYou = [
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+    {
+        icon: "/images/tower_wizard.png",
+        title: "Tower Wizard",
+        price: "WEB",
+        tags: ["upgrades", "Idle"],
+        description: "Construct the mightiest wizard tower!",
+    },
+];
+
 const moreFeaturedGames = [
     {
         icon: "/images/tower_wizard.png",
@@ -355,12 +412,23 @@ function App() {
                     <GameCollection
                         heading="Latest Featured Games"
                         games={latestFeaturedGames}
+                        haveViewAll
                     />
-                    <GameCollection heading="Fresh Games" games={freshGames} />
+                    <GameCollection
+                        heading="Fresh Games"
+                        games={freshGames}
+                        haveViewAll
+                    />
+                    <RecommendedForYou
+                        tags={recommendedTags}
+                        games={recommendedForYou}
+                    />
                     <GameCollection
                         heading="More Featured Games"
                         games={moreFeaturedGames}
                     />
+                    <SeeMoreSection />
+                    <Footer />
                 </div>
             </main>
         </>
