@@ -5,7 +5,7 @@ import ToCare from "../../images/to_care.png";
 import SevenSeconds from "../../images/7_seconds.png";
 import "../../fontawesome-free-6.7.2-web/css/all.min.css";
 
-export function FeaturedBundle() {
+export function FeaturedBundleSection() {
     return (
         <section className="p-8">
             <h2 className="text-xl font-bold">Featured Bundle</h2>
@@ -101,8 +101,16 @@ function GameItem({ icon, title, price, tags, description }) {
                 <img src={icon} alt={`icon of ${title}`} />
             </a>
             <div className="flex items-center justify-between font-bold">
-                <a href="#">{title}</a>
-                <span className="rounded-md bg-gray-300 px-1">{price}</span>
+                <a className="hover:underline" href="#">
+                    {title}
+                </a>
+                {price === "FREE" || price === "WEB" ? (
+                    <span className="rounded-md bg-gray-300 px-1">{price}</span>
+                ) : (
+                    <span className="rounded-md bg-gray-600 px-1 text-white">
+                        {price}
+                    </span>
+                )}
             </div>
             <div className="">
                 {tags.map((tag, idx) => (
@@ -171,5 +179,54 @@ export function SeeMoreSection() {
                 View something random <i className="fa-solid fa-shuffle" />
             </a>
         </section>
+    );
+}
+
+export function FeaturedJamSection({ jams }) {
+    return (
+        <section className="flex flex-col gap-2 p-8">
+            <div className="flex items-center gap-4">
+                <h2 className="text-xl font-bold">Recommended For You</h2>
+                <a
+                    className="rounded-md border px-2 py-1 text-sm font-semibold text-red-600"
+                    href="#"
+                >
+                    View all jams <i className="fa-solid fa-arrow-right-long" />
+                </a>
+            </div>
+            <div className="text-gray-600">
+                Based on things you've purchased, downloaded, and rated
+            </div>
+            <ul className="flex gap-4">
+                {jams.map((jam) => (
+                    <JamItem {...jam} />
+                ))}
+            </ul>
+        </section>
+    );
+}
+
+function JamItem({ banner, title, joinedCount, submissionCount, description }) {
+    return (
+        <li className="flex flex-col gap-1 text-sm">
+            <a href="#">
+                <img src={banner} alt={`banner of ${title}`} />
+            </a>
+            <div className="flex items-center justify-between font-bold">
+                <a className="hover:underline" href="#">
+                    {title}
+                </a>
+                <span className="min-w-fit rounded-md bg-blue-400 px-1 text-white">
+                    GAME JAM
+                </span>
+            </div>
+            <div className="flex items-center justify-between font-bold">
+                <span className="text-gray-600">{joinedCount} joined</span>
+                <span className="text-gray-600">
+                    {submissionCount} submissions
+                </span>
+            </div>
+            <span className="text-gray-600">{description}</span>
+        </li>
     );
 }

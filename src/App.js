@@ -1,7 +1,8 @@
 import { BannerSection, PromoSection } from "./components/ui/banner";
 import { Footer } from "./components/ui/footer";
 import {
-    FeaturedBundle,
+    FeaturedBundleSection,
+    FeaturedJamSection,
     GameCollection,
     RecommendedForYou,
     SeeMoreSection,
@@ -276,6 +277,41 @@ const recommendedForYou = [
     },
 ];
 
+const featuredJams = [
+    {
+        banner: "/images/brackey_game_jam.png",
+        title: "Brackeys Game Jam 2025.1",
+        joinedCount: 10947,
+        submissionCount: 14,
+        description:
+            "Make a game in one week - The 13th official Brackeys Game Jam!",
+    },
+    {
+        banner: "/images/brackey_game_jam.png",
+        title: "Brackeys Game Jam 2025.1",
+        joinedCount: 10947,
+        submissionCount: 14,
+        description:
+            "Make a game in one week - The 13th official Brackeys Game Jam!",
+    },
+    {
+        banner: "/images/brackey_game_jam.png",
+        title: "Brackeys Game Jam 2025.1",
+        joinedCount: 10947,
+        submissionCount: 14,
+        description:
+            "Make a game in one week - The 13th official Brackeys Game Jam!",
+    },
+    {
+        banner: "/images/brackey_game_jam.png",
+        title: "Brackeys Game Jam 2025.1",
+        joinedCount: 10947,
+        submissionCount: 14,
+        description:
+            "Make a game in one week - The 13th official Brackeys Game Jam!",
+    },
+];
+
 const moreFeaturedGames = [
     {
         icon: "/images/tower_wizard.png",
@@ -408,7 +444,7 @@ function App() {
                             tags: ["First-Person", "Horror", "Atmospheric"],
                         }}
                     />
-                    <FeaturedBundle />
+                    <FeaturedBundleSection />
                     <GameCollection
                         heading="Latest Featured Games"
                         games={latestFeaturedGames}
@@ -423,6 +459,7 @@ function App() {
                         tags={recommendedTags}
                         games={recommendedForYou}
                     />
+                    <FeaturedJamSection jams={featuredJams} />
                     <GameCollection
                         heading="More Featured Games"
                         games={moreFeaturedGames}
