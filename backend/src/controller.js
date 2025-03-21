@@ -73,9 +73,15 @@ export async function createGame(req, res, next) {
  */
 export async function updateGame(req, res, next) {
 	try {
+		const $set = {};
+		for (const k in req.body) {
+			if (k !== "id" && req.body[k]) {
+				$set[k] = req.body[k];
+			}
+		}
 		const game = await GameModel.findOneAndUpdate(
 			{ id: req.params.id },
-			{ $set: req.body },
+			{ $set },
 			{ runValidators: true, new: true },
 		);
 		if (game !== null) {

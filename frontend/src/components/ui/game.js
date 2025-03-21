@@ -54,17 +54,23 @@ export function GameCard({
 			</div>
 			<div className="p-4 flex flex-col gap-2 relative">
 				<div className="aspect-square overflow-hidden grid place-items-center bg-black rounded-md">
-					<img
-						className="rounded-md"
-						src={thumbnailUrl || `${apiUrl}/images/${thumbnail}`}
-						alt={`thumbnail of ${name}`}
-					/>
+					{thumbnailUrl || thumbnail ? (
+						<img
+							className="rounded-md"
+							src={
+								thumbnailUrl || `${apiUrl}/images/${thumbnail}`
+							}
+							alt={`thumbnail of ${name}`}
+						/>
+					) : (
+						<></>
+					)}
 				</div>
 				<div className="font-semibold text-xl">{name}</div>
 				<div className="text-gray-200 italic">{description}</div>
 			</div>
 			<div className="py-4 bg-black font-bold text-center rounded-b-md">
-				{new Date(releaseDate || null).toLocaleString("vi-VN", {
+				{new Date(releaseDate).toLocaleString("vi-VN", {
 					day: "2-digit",
 					month: "2-digit",
 					year: "numeric",
@@ -74,6 +80,9 @@ export function GameCard({
 	);
 }
 
+/**
+ * @param {import("react").InputHTMLAttributes} props
+ */
 export function Input(props) {
 	return (
 		<input

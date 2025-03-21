@@ -3,11 +3,10 @@ import { Link, useParams } from "react-router";
 import { GameCard, Input } from "../ui/game";
 
 export function GameList() {
-	const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
-
 	const [games, setGames] = useState([]);
 
 	useEffect(() => {
+		const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
 		(async () => {
 			const res = await fetch(`${apiUrl}/game/query`);
 			const gameList = await res.json();
@@ -42,35 +41,49 @@ export function GameCreator() {
 }
 
 export function GameDetail() {
-	const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
 	const { id } = useParams();
 	const [game, setGame] = useState({});
+	const [currentGame, setCurrentGame] = useState({});
+	const [formData, setFormData] = useState({});
+	const [viewMode, setViewMode] = useState("");
 
 	useEffect(() => {
+		const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
+		const requestUrl = new URL(`${apiUrl}/game/query`);
+		requestUrl.searchParams.append("id", id);
 		(async () => {
-			const requestUrl = new URL(`${apiUrl}/game/query`);
-			requestUrl.searchParams.append("id", id);
 			const res = await fetch(requestUrl);
 			const game = await res.json();
 			if (game.length === 1) {
-				setGame({
-					...game[0],
-					releaseDate: new Date(game[0].releaseDate).toLocaleString(
-						"en-CA",
-						{
-							day: "2-digit",
-							month: "2-digit",
-							year: "numeric",
-						},
-					),
+				const releaseDate = new Date(
+					game[0].releaseDate,
+				).toLocaleString("en-CA", {
+					day: "2-digit",
+					month: "2-digit",
+					year: "numeric",
 				});
+				setCurrentGame({ ...game[0], releaseDate });
+				setFormData({ ...game[0], releaseDate });
 			}
 		})();
-	}, []);
+	}, [id]);
+
+	useEffect(() => {
+		if (viewMode === "preview") {
+			setGame(formData);
+		} else {
+			setGame(currentGame);
+		}
+	}, [viewMode, formData, currentGame]);
 
 	return (
 		<div className="bg-gray-700 min-h-screen flex justify-evenly items-center">
-			<form className="text-white min-w-96 font-semibold grid gap-4">
+			<form
+				onSubmit={(e) => {
+					e.preventDefault();
+				}}
+				className="text-white min-w-96 font-semibold grid gap-y-4"
+			>
 				<h1 className="text-5xl text-center font-bold">Update game</h1>
 				<label>
 					ID: <br />
@@ -79,7 +92,7 @@ export function GameDetail() {
 						name="id"
 						id="id"
 						disabled
-						value={game.id}
+						value={formData.id || ""}
 					/>
 				</label>
 				<label>
@@ -88,9 +101,12 @@ export function GameDetail() {
 						type="text"
 						name="name"
 						id="name"
-						value={game.name}
+						value={formData.name || ""}
 						onChange={(e) => {
-							setGame({ ...game, name: e.currentTarget.value });
+							setFormData({
+								...formData,
+								name: e.currentTarget.value,
+							});
 						}}
 					/>
 				</label>
@@ -100,10 +116,10 @@ export function GameDetail() {
 						type="text"
 						name="description"
 						id="description"
-						value={game.description}
+						value={formData.description || ""}
 						onChange={(e) => {
-							setGame({
-								...game,
+							setFormData({
+								...formData,
 								description: e.currentTarget.value,
 							});
 						}}
@@ -115,10 +131,10 @@ export function GameDetail() {
 						type="date"
 						name="releaseDate"
 						id="releaseDate"
-						value={game.releaseDate}
+						value={formData.releaseDate || ""}
 						onChange={(e) => {
-							setGame({
-								...game,
+							setFormData({
+								...formData,
 								releaseDate: e.currentTarget.value,
 							});
 						}}
@@ -126,10 +142,47 @@ export function GameDetail() {
 				</label>
 				<label>
 					Thumbnail: <br />
-					<Input type="file" name="thumbnail" id="thumbnail" />
+					<Input
+						type="file"
+						name="thumbnail"
+						id="thumbnail"
+						accept="image/png, image/jpeg, image/jpg, image/webp"
+						onChange={(e) => {
+							const files = e.target.files;
+							if (files.length > 0) {
+								const reader = new FileReader();
+								reader.onload = () => {
+									setFormData({
+										...formData,
+										thumbnailUrl: reader.result,
+									});
+								};
+								reader.readAsDataURL(files[0]);
+							}
+						}}
+					/>
 				</label>
+				<button
+					className="rounded-sm bg-blue-500 px-3 py-2 text-lg text-white"
+					type="submit"
+				>
+					Update
+				</button>
 			</form>
 			<div className="max-w-[25rem]">
+				<label className="bg-white px-4 py-2 text-xl font-semibold grid grid-cols-[auto_1fr] gap-x-2">
+					View mode:
+					<select
+						onChange={(e) => {
+							setViewMode(e.currentTarget.value);
+						}}
+						name="view-mode"
+						value={viewMode}
+					>
+						<option value="">Current</option>
+						<option value="preview">Preview</option>
+					</select>
+				</label>
 				<GameCard {...game} />
 			</div>
 		</div>
