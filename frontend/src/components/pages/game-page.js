@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
+import { API_URL } from "../../lib/utils";
 import { GameCard, Input } from "../ui/game";
 
 export function GameList() {
 	const [games, setGames] = useState([]);
 
 	useEffect(() => {
-		const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
 		(async () => {
-			const res = await fetch(`${apiUrl}/game/query`);
+			const res = await fetch(`${API_URL}/game/query`);
 			const gameList = await res.json();
 			setGames(gameList);
 		})();
@@ -28,7 +28,26 @@ export function GameList() {
 						>
 							{game.name}
 						</Link>
-						<GameCard {...game} deleteEnabled />
+						<GameCard
+							{...game}
+							deleteAction={async (id) => {
+								try {
+									const res = await fetch(
+										`${API_URL}/game/delete/${id}`,
+										{ method: "DELETE" },
+									);
+									const deletedGame = await res.json();
+									setGames(
+										games.filter(
+											(game) =>
+												game.id !== deletedGame.id,
+										),
+									);
+								} catch (err) {
+									console.error(err);
+								}
+							}}
+						/>
 					</li>
 				))}
 			</ul>
@@ -37,7 +56,98 @@ export function GameList() {
 }
 
 export function GameCreator() {
-	return <></>;
+	const [formData, setFormData] = useState({});
+	return (
+		<div className="flex justify-evenly items-center h-full">
+			<form
+				onSubmit={(e) => {
+					e.preventDefault();
+				}}
+				className="min-w-96 font-semibold grid gap-y-4"
+			>
+				<h1 className="text-5xl text-center font-bold">Create game</h1>
+				<label>
+					Name: <br />
+					<Input
+						type="text"
+						name="name"
+						id="name"
+						value={formData.name || ""}
+						onChange={(e) => {
+							setFormData({
+								...formData,
+								name: e.currentTarget.value,
+							});
+						}}
+					/>
+				</label>
+				<label>
+					Description: <br />
+					<Input
+						type="text"
+						name="description"
+						id="description"
+						value={formData.description || ""}
+						onChange={(e) => {
+							setFormData({
+								...formData,
+								description: e.currentTarget.value,
+							});
+						}}
+					/>
+				</label>
+				<label>
+					Release date: <br />
+					<Input
+						type="date"
+						name="releaseDate"
+						id="releaseDate"
+						value={formData.releaseDate || ""}
+						onChange={(e) => {
+							setFormData({
+								...formData,
+								releaseDate: e.currentTarget.value,
+							});
+						}}
+					/>
+				</label>
+				<label>
+					Thumbnail: <br />
+					<Input
+						type="file"
+						name="thumbnail"
+						id="thumbnail"
+						accept="image/png, image/jpeg, image/jpg, image/webp"
+						onChange={(e) => {
+							const files = e.target.files;
+							if (files.length > 0) {
+								const reader = new FileReader();
+								reader.onload = () => {
+									setFormData({
+										...formData,
+										thumbnailUrl: reader.result,
+									});
+								};
+								reader.readAsDataURL(files[0]);
+							}
+						}}
+					/>
+				</label>
+				<button
+					className="rounded-sm bg-green-500 px-3 py-2 text-lg text-white"
+					type="submit"
+				>
+					Create
+				</button>
+			</form>
+			<div className="w-[25rem]">
+				<h2 className="text-4xl text-center font-semibold grid gap-x-2">
+					Preview
+				</h2>
+				<GameCard {...formData} />
+			</div>
+		</div>
+	);
 }
 
 export function GameDetail() {
@@ -48,8 +158,7 @@ export function GameDetail() {
 	const [viewMode, setViewMode] = useState("");
 
 	useEffect(() => {
-		const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
-		const requestUrl = new URL(`${apiUrl}/game/query`);
+		const requestUrl = new URL(`${API_URL}/game/query`);
 		requestUrl.searchParams.append("id", id);
 		(async () => {
 			const res = await fetch(requestUrl);
@@ -63,10 +172,13 @@ export function GameDetail() {
 					year: "numeric",
 				});
 				setCurrentGame({ ...game[0], releaseDate });
-				setFormData({ ...game[0], releaseDate });
 			}
 		})();
 	}, [id]);
+
+	useEffect(() => {
+		setFormData({ ...currentGame });
+	}, [currentGame]);
 
 	useEffect(() => {
 		if (viewMode === "preview") {
@@ -79,8 +191,24 @@ export function GameDetail() {
 	return (
 		<div className="bg-gray-700 min-h-screen flex justify-evenly items-center">
 			<form
-				onSubmit={(e) => {
+				onSubmit={async (e) => {
 					e.preventDefault();
+					try {
+						const res = await fetch(
+							`${API_URL}/game/update/${id}`,
+							{
+								method: "PATCH",
+								headers: {
+									"Content-Type": "application/json",
+								},
+								body: JSON.stringify(formData),
+							},
+						);
+						const data = await res.json();
+						setCurrentGame(data);
+					} catch (err) {
+						console.error(err);
+					}
 				}}
 				className="text-white min-w-96 font-semibold grid gap-y-4"
 			>

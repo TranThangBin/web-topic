@@ -75,7 +75,7 @@ export async function updateGame(req, res, next) {
 	try {
 		const $set = {};
 		for (const k in req.body) {
-			if (k !== "id" && req.body[k]) {
+			if (k !== "id" && req.body[k] !== undefined) {
 				$set[k] = req.body[k];
 			}
 		}

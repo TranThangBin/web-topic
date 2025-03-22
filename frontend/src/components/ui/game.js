@@ -1,4 +1,5 @@
 import { NavLink } from "react-router";
+import { API_URL } from "../../lib/utils";
 
 export function GameSidebar() {
 	return (
@@ -35,17 +36,18 @@ export function GameCard({
 	description,
 	thumbnail,
 	releaseDate,
-	deleteEnabled,
+	deleteAction,
 	thumbnailUrl,
 }) {
-	const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
-
 	return (
 		<div className="text-white bg-gray-700 rounded-md">
 			<div className="flex justify-between items-center bg-black font-bold pl-4 rounded-t-md h-10">
-				#{id}
-				{deleteEnabled ? (
-					<button className="h-full aspect-square px-2 bg-red-500 cursor-pointer fill-white rounded-tr-md">
+				#{id || "Unknown"}
+				{deleteAction !== undefined ? (
+					<button
+						onClick={() => deleteAction(id)}
+						className="h-full aspect-square px-2 bg-red-500 cursor-pointer fill-white rounded-tr-md"
+					>
 						<XMarkIcon />
 					</button>
 				) : (
@@ -58,7 +60,7 @@ export function GameCard({
 						<img
 							className="rounded-md"
 							src={
-								thumbnailUrl || `${apiUrl}/images/${thumbnail}`
+								thumbnailUrl || `${API_URL}/images/${thumbnail}`
 							}
 							alt={`thumbnail of ${name}`}
 						/>

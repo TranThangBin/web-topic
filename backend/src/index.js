@@ -24,6 +24,10 @@ gameRouter.post("/new", createGame);
 gameRouter.patch("/update/:id", updateGame);
 gameRouter.delete("/delete/:id", deleteGame);
 
+server.use((req, _, next) => {
+	console.log(req.method, req.path);
+	next();
+});
 server.use(express.static(join(DIRNAME, "..", "public")));
 server.use(express.json());
 server.use(fileUpload({ createParentPath: true }));
