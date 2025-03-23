@@ -1,13 +1,26 @@
 import { Error } from "mongoose";
 import { GameModel } from "./model.js";
+import { Router } from "express";
+import { join, extname } from "path";
+import { getDirname } from "./utils.js";
 
 const GameNotFoundError = new Error("Game not found");
 
 /**
+ * @typedef {import("./types.d.ts").TGame} TGame
  * @typedef {import("express").Request} Request
  * @typedef {import("express").Response} Response
  * @typedef {import("express").NextFunction} NextFunction
  */
+
+/**
+ * @param {Request} req
+ * @param {NextFunction} next
+ */
+export function handleLog(req, _, next) {
+	console.log(req.method, req.path);
+	next();
+}
 
 /**
  * @param {Response} res
@@ -30,21 +43,23 @@ export function handleError(err, _, res, __) {
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function queryGame(req, res, next) {
+async function queryGame(req, res, next) {
 	try {
-		const { id, name } = req.query;
+		const { id, name, releaseDate } = req.query;
+		const sort = { _id: 1 };
+		if (releaseDate === "asc") {
+			sort.releaseDate = -1;
+		}else if (releaseDate === "desc") {
+			sort.releaseDate = 1;
+		}
 		const games = await GameModel.find(
 			{
 				id: { $regex: id || "", $options: "i" },
 				name: { $regex: name || "", $options: "i" },
 			},
 			{ _id: 0 },
+			{ sort },
 		);
-		games.sort((a, b) => {
-			const idx1 = a.get("id").slice(-4);
-			const idx2 = b.get("id").slice(-4);
-			return parseInt(idx1) - parseInt(idx2);
-		});
 		res.json(games);
 	} catch (err) {
 		next(err);
@@ -56,10 +71,9 @@ export async function queryGame(req, res, next) {
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function createGame(req, res, next) {
-	const game = new GameModel(req.body);
+async function createGame(req, res, next) {
 	try {
-		await game.save();
+		const game = await GameModel.insertOne(req.game);
 		res.json(game);
 	} catch (err) {
 		next(err);
@@ -71,17 +85,11 @@ export async function createGame(req, res, next) {
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function updateGame(req, res, next) {
+async function updateGame(req, res, next) {
 	try {
-		const $set = {};
-		for (const k in req.body) {
-			if (k !== "id" && req.body[k] !== undefined) {
-				$set[k] = req.body[k];
-			}
-		}
 		const game = await GameModel.findOneAndUpdate(
 			{ id: req.params.id },
-			{ $set },
+			{ $set: req.game },
 			{ runValidators: true, new: true },
 		);
 		if (game !== null) {
@@ -99,7 +107,47 @@ export async function updateGame(req, res, next) {
  * @param {Response} res
  * @param {NextFunction} next
  */
-export async function deleteGame(req, res, next) {
+async function validateGame(req, _, next) {
+	const { id, ...game } = req.body;
+	try {
+		await GameModel.validate(game);
+		req.game = game;
+		next();
+	} catch (err) {
+		next(err);
+	}
+}
+
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
+async function handleFileUpload(req, _, next) {
+	const files = req.files;
+	if (!files || !files.thumbnail || files.thumbnail.size === 0) {
+		next();
+		return;
+	}
+	const thumbnail = files.thumbnail;
+	const filename = Date.now().toString() + extname(thumbnail.name);
+	try {
+		await thumbnail.mv(
+			join(getDirname(), "..", "public", "images", filename),
+		);
+		req.game.thumbnail = filename;
+		next();
+	} catch (err) {
+		next(err);
+	}
+}
+
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
+async function deleteGame(req, res, next) {
 	try {
 		const game = await GameModel.findOneAndDelete({ id: req.params.id });
 		if (game !== null) {
@@ -111,3 +159,9 @@ export async function deleteGame(req, res, next) {
 		next(err);
 	}
 }
+
+export const gameRouter = Router();
+gameRouter.get("/query", queryGame);
+gameRouter.post("/new", validateGame, handleFileUpload, createGame);
+gameRouter.patch("/update/:id", validateGame, handleFileUpload, updateGame);
+gameRouter.delete("/delete/:id", deleteGame);

@@ -41,14 +41,14 @@ GameSchema.pre("save", async function (next) {
 		const lastDoc = await Model.findOne(
 			{},
 			{ id: 1, _id: 0 },
-			{ sort: { id: -1 } },
+			{ sort: { _id: -1 } },
 		).limit(1);
 
 		if (lastDoc === null) {
 			this.id = "GAME" + "0001";
 		} else {
 			const lastID = lastDoc.id;
-			const prevNumber = parseInt(lastID.substring(4)) + 1;
+			const prevNumber = parseInt(lastID.slice(-4)) + 1;
 			this.id = "GAME" + prevNumber.toString().padStart(4, "0");
 		}
 

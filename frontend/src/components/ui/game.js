@@ -40,7 +40,7 @@ export function GameCard({
 	thumbnailUrl,
 }) {
 	return (
-		<div className="text-white bg-gray-700 rounded-md">
+		<div className="text-white bg-gray-700 rounded-md grid grid-rows-[auto_1fr_auto] h-full">
 			<div className="flex justify-between items-center bg-black font-bold pl-4 rounded-t-md h-10">
 				#{id || "Unknown"}
 				{deleteAction !== undefined ? (
@@ -88,7 +88,7 @@ export function GameCard({
 export function Input(props) {
 	return (
 		<input
-			className="bg-gray-200 disabled:bg-gray-300 text-black min-w-full p-2 font-normal"
+			className="bg-gray-200 disabled:bg-gray-300 text-black min-w-full p-2 font-normal border"
 			{...props}
 		/>
 	);

@@ -1,21 +1,45 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useParams, useSearchParams } from "react-router";
 import { API_URL } from "../../lib/utils";
 import { GameCard, Input } from "../ui/game";
 
 export function GameList() {
 	const [games, setGames] = useState([]);
+	const [searchParams, setSearchParams] = useSearchParams();
 
 	useEffect(() => {
 		(async () => {
-			const res = await fetch(`${API_URL}/game/query`);
+			const apiUrl = new URL(`${API_URL}/game/query`);
+			apiUrl.searchParams.append("name", searchParams.get("name") || "");
+			const res = await fetch(apiUrl);
 			const gameList = await res.json();
 			setGames(gameList);
 		})();
-	}, []);
+	}, [searchParams]);
 
 	return (
 		<div>
+			<div className="p-4">
+				<search className="w-96">
+					<form>
+						<label>
+							Query games by name:
+							<Input
+								onChange={(e) => {
+									const search = new URLSearchParams();
+									search.append(
+										"name",
+										e.currentTarget.value,
+									);
+									setSearchParams(search);
+								}}
+								name="name"
+								id="name"
+							/>
+						</label>
+					</form>
+				</search>
+			</div>
 			<ul
 				className="grid max-h-[calc(100vh-6.25rem)] overflow-auto
 					grid-cols-[repeat(auto-fill,minmax(25rem,1fr))] p-4 gap-4"
@@ -60,8 +84,19 @@ export function GameCreator() {
 	return (
 		<div className="flex justify-evenly items-center h-full">
 			<form
-				onSubmit={(e) => {
+				onSubmit={async (e) => {
 					e.preventDefault();
+					const form = e.currentTarget;
+					try {
+						await fetch(`${API_URL}/game/new`, {
+							method: "POST",
+							body: new FormData(form),
+						});
+						form.reset();
+						setFormData({});
+					} catch (err) {
+						console.error(err);
+					}
 				}}
 				className="min-w-96 font-semibold grid gap-y-4"
 			>
@@ -193,15 +228,13 @@ export function GameDetail() {
 			<form
 				onSubmit={async (e) => {
 					e.preventDefault();
+					const form = e.currentTarget;
 					try {
 						const res = await fetch(
 							`${API_URL}/game/update/${id}`,
 							{
 								method: "PATCH",
-								headers: {
-									"Content-Type": "application/json",
-								},
-								body: JSON.stringify(formData),
+								body: new FormData(form),
 							},
 						);
 						const data = await res.json();
@@ -215,13 +248,7 @@ export function GameDetail() {
 				<h1 className="text-5xl text-center font-bold">Update game</h1>
 				<label>
 					ID: <br />
-					<Input
-						type="text"
-						name="id"
-						id="id"
-						disabled
-						value={formData.id || ""}
-					/>
+					<Input type="text" disabled value={formData.id || ""} />
 				</label>
 				<label>
 					Name: <br />
