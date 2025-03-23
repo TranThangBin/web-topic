@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router";
 import { API_URL } from "../../lib/utils";
-import { GameCard, Input } from "../ui/game";
+import { GameCard, Input, Select } from "../ui/game";
 
 export function GameList() {
 	const [games, setGames] = useState([]);
@@ -11,6 +11,10 @@ export function GameList() {
 		(async () => {
 			const apiUrl = new URL(`${API_URL}/game/query`);
 			apiUrl.searchParams.append("name", searchParams.get("name") || "");
+			apiUrl.searchParams.append(
+				"releaseDate",
+				searchParams.get("releaseDate") || "",
+			);
 			const res = await fetch(apiUrl);
 			const gameList = await res.json();
 			setGames(gameList);
@@ -18,31 +22,50 @@ export function GameList() {
 	}, [searchParams]);
 
 	return (
-		<div>
+		<div className="overflow-auto">
 			<div className="p-4">
-				<search className="w-96">
-					<form>
+				<search>
+					<form className="flex justify-evenly items-center">
+						<label>
+							Release date:
+							<Select
+								onChange={(e) => {
+									searchParams.set(
+										"releaseDate",
+										e.currentTarget.value,
+									);
+									setSearchParams(searchParams);
+								}}
+								name="release-date"
+								id="release-date"
+								value={searchParams.get("releaseDate") || ""}
+							>
+								<option value="">Default</option>
+								<option value="asc">Ascending</option>
+								<option value="desc">Descending</option>
+							</Select>
+						</label>
 						<label>
 							Query games by name:
 							<Input
 								onChange={(e) => {
-									const search = new URLSearchParams();
-									search.append(
+									searchParams.set(
 										"name",
 										e.currentTarget.value,
 									);
-									setSearchParams(search);
+									setSearchParams(searchParams);
 								}}
 								name="name"
 								id="name"
+								value={searchParams.get("name") || ""}
 							/>
 						</label>
 					</form>
 				</search>
 			</div>
 			<ul
-				className="grid max-h-[calc(100vh-6.25rem)] overflow-auto
-					grid-cols-[repeat(auto-fill,minmax(25rem,1fr))] p-4 gap-4"
+				className="grid max-h-[calc(100vh-6.25rem)] grid-cols-[repeat(auto-fill,minmax(25rem,1fr))]
+					p-4 gap-4"
 			>
 				{games.map((game) => (
 					<li className="relative" key={game.id}>

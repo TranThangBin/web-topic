@@ -94,6 +94,20 @@ export function Input(props) {
 	);
 }
 
+/**
+ * @param {import("react").SelectHTMLAttributes} props
+ */
+export function Select({ children, ...rest }) {
+	return (
+		<select
+			className="bg-gray-200 disabled:bg-gray-300 text-black min-w-full p-2 font-normal border"
+			{...rest}
+		>
+			{children}
+		</select>
+	);
+}
+
 function XMarkIcon() {
 	return (
 		<svg viewBox="0 0 16 16" version="1.1">

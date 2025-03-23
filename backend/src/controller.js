@@ -46,12 +46,15 @@ export function handleError(err, _, res, __) {
 async function queryGame(req, res, next) {
 	try {
 		const { id, name, releaseDate } = req.query;
-		const sort = { _id: 1 };
+		const sort = {};
 		if (releaseDate === "asc") {
-			sort.releaseDate = -1;
-		}else if (releaseDate === "desc") {
 			sort.releaseDate = 1;
+		} else if (releaseDate === "desc") {
+			sort.releaseDate = -1;
+		} else {
+			sort._id = 1;
 		}
+		console.log(sort);
 		const games = await GameModel.find(
 			{
 				id: { $regex: id || "", $options: "i" },

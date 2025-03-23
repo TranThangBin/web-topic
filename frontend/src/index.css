@@ -255,6 +255,12 @@
   .max-w-\[25rem\] {
     max-width: 25rem;
   }
+  .min-w-32 {
+    min-width: calc(var(--spacing) * 32);
+  }
+  .min-w-42 {
+    min-width: calc(var(--spacing) * 42);
+  }
   .min-w-96 {
     min-width: calc(var(--spacing) * 96);
   }
@@ -305,6 +311,9 @@
   }
   .gap-x-2 {
     column-gap: calc(var(--spacing) * 2);
+  }
+  .gap-x-4 {
+    column-gap: calc(var(--spacing) * 4);
   }
   .gap-y-4 {
     row-gap: calc(var(--spacing) * 4);
