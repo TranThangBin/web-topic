@@ -54,9 +54,9 @@ GameSchema.pre("save", async function (next) {
 
 		next();
 	} catch (err) {
-		return next(err);
+		next(err);
 	}
 });
 
 /** @type {import("./types").TGameModel} */
-export const GameModel = model("game", GameSchema);
+export const GameModel = model("games", GameSchema);

@@ -1,3 +1,4 @@
+demo/
 node_modules/
 public/images/*
 !public/images/Animal_Crossing_New_Horizons.jpg
