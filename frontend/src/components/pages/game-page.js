@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router";
 import { API_URL } from "../../lib/utils";
-import { GameCard, Input, Select } from "../ui/game";
+import { GameCard, Input, Select, XMarkIcon } from "../ui/game";
 
 export function GameList() {
 	const [games, setGames] = useState([]);
@@ -68,33 +68,43 @@ export function GameList() {
 					p-4 gap-4"
 			>
 				{games.map((game) => (
-					<li className="relative" key={game.id}>
+					<li
+						className="relative grid grid-rows-[auto_1fr] bg-gray-700 rounded-md"
+						key={game.id}
+					>
+						<div className="bg-black flex justify-end rounded-t-md">
+							<button
+								onClick={async () => {
+									try {
+										const res = await fetch(
+											`${API_URL}/game/delete/${game.id}`,
+											{ method: "DELETE" },
+										);
+										const deletedGame = await res.json();
+										setGames(
+											games.filter(
+												(game) =>
+													game.id !== deletedGame.id,
+											),
+										);
+										alert("Successfully delete game");
+									} catch (err) {
+										console.error(err);
+										alert(err.message);
+									}
+								}}
+								className="h-9 aspect-square px-2 bg-red-500 cursor-pointer fill-white rounded-tr-md"
+							>
+								<XMarkIcon />
+							</button>
+						</div>
+						<GameCard {...game} id={null} />
 						<Link
 							className="absolute top-[2.5rem] w-full h-[calc(100%-2.5rem-3.5rem)] text-transparent z-10"
 							to={`/game/${game.id}`}
 						>
 							{game.name}
 						</Link>
-						<GameCard
-							{...game}
-							deleteAction={async (id) => {
-								try {
-									const res = await fetch(
-										`${API_URL}/game/delete/${id}`,
-										{ method: "DELETE" },
-									);
-									const deletedGame = await res.json();
-									setGames(
-										games.filter(
-											(game) =>
-												game.id !== deletedGame.id,
-										),
-									);
-								} catch (err) {
-									console.error(err);
-								}
-							}}
-						/>
 					</li>
 				))}
 			</ul>
@@ -117,8 +127,10 @@ export function GameCreator() {
 						});
 						form.reset();
 						setFormData({});
+						alert("Successfully added game");
 					} catch (err) {
 						console.error(err);
+						alert(err.message);
 					}
 				}}
 				className="min-w-96 font-semibold grid gap-y-4"
@@ -262,8 +274,10 @@ export function GameDetail() {
 						);
 						const data = await res.json();
 						setCurrentGame(data);
+						alert("Successfully updated game");
 					} catch (err) {
 						console.error(err);
+						alert(err.message);
 					}
 				}}
 				className="text-white min-w-96 font-semibold grid gap-y-4"
@@ -341,7 +355,7 @@ export function GameDetail() {
 					/>
 				</label>
 				<button
-					className="rounded-sm bg-blue-500 px-3 py-2 text-lg text-white"
+					className="rounded-sm bg-blue-500 px-3 py-2 text-lg text-white cursor-pointer"
 					type="submit"
 				>
 					Update

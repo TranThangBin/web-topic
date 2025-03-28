@@ -11,7 +11,9 @@ const server = express();
 server.use(express.static(join(getDirname(), "..", "public")));
 server.use(express.json());
 server.use(fileUpload({ createParentPath: true }));
-server.use(cors({ origin: ["http://127.0.0.1:3000"] }));
+server.use(
+	cors({ origin: ["http://127.0.0.1:3000", "http://localhost:3000"] }),
+);
 server.use(handleLog);
 server.use(handleError);
 server.use("/game", gameRouter);

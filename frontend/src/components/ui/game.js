@@ -36,24 +36,18 @@ export function GameCard({
 	description,
 	thumbnail,
 	releaseDate,
-	deleteAction,
 	thumbnailUrl,
 }) {
 	return (
 		<div className="text-white bg-gray-700 rounded-md grid grid-rows-[auto_1fr_auto] h-full">
-			<div className="flex justify-between items-center bg-black font-bold pl-4 rounded-t-md h-10">
-				#{id || "Unknown"}
-				{deleteAction !== undefined ? (
-					<button
-						onClick={() => deleteAction(id)}
-						className="h-full aspect-square px-2 bg-red-500 cursor-pointer fill-white rounded-tr-md"
-					>
-						<XMarkIcon />
-					</button>
-				) : (
-					<></>
-				)}
-			</div>
+			{id ? (
+				<div className="flex justify-between items-center bg-black font-bold pl-4 rounded-t-md h-10">
+					#{id}
+				</div>
+			) : (
+				<div></div>
+			)}
+
 			<div className="p-4 flex flex-col gap-2 relative">
 				<div className="aspect-square overflow-hidden grid place-items-center bg-black rounded-md">
 					{thumbnailUrl || thumbnail ? (
@@ -108,7 +102,7 @@ export function Select({ children, ...rest }) {
 	);
 }
 
-function XMarkIcon() {
+export function XMarkIcon() {
 	return (
 		<svg viewBox="0 0 16 16" version="1.1">
 			<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
