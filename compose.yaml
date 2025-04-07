@@ -1,0 +1,43 @@
+services:
+  client:
+    image: auth-client
+    volumes:
+      - ./client/src:/client/src
+      - ./client/public:/client/public
+    build:
+      context: client
+    environment:
+      REACT_APP_API_URL: http://127.0.0.1:5000
+    command: npm start
+    depends_on:
+      - client-css
+      - server
+    ports:
+      - 3000:3000
+
+  client-css:
+    image: auth-client-css
+    volumes:
+      - ./client/src:/client/src
+    build:
+      context: client
+    tty: true
+    command: npm run build-css
+
+  server:
+    image: auth-server
+    volumes:
+      - ./server/src:/server/src
+    build:
+      context: server
+    environment:
+      PORT: 5000
+      WORKFACTOR: 12
+      MONGO_USERS_COLLECTION: users
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASS: ${MONGO_PASS}
+      MONGO_URI: ${MONGO_URI}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_APPNAME: ${MONGO_APPNAME}
+    ports:
+      - 5000:5000
