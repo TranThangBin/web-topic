@@ -1,11 +1,12 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Gophers from "../../assets/gophers.jpg";
 import { API_URL } from "../../utils";
 
 export function LoginPage() {
+	const navigate = useNavigate();
 	return (
 		<div className="grid min-h-screen place-items-center">
-			<div className="grid min-h-4/5 min-w-4/5 grid-cols-[1fr_auto] flex-col justify-between overflow-hidden rounded-xl bg-white shadow shadow-black">
+			<div className="grid min-h-4/5 min-w-4/5 grid-cols-[1fr_auto] overflow-hidden rounded-xl bg-white shadow shadow-black">
 				<img className="h-full" src={Gophers} alt="a funny image" />
 				<div className="flex flex-col items-end justify-center text-lg">
 					<form
@@ -32,7 +33,18 @@ export function LoginPage() {
 									});
 								return;
 							}
-							alert("successfully logged in");
+							res.json()
+								.then((user) => {
+									localStorage.setItem(
+										"user",
+										JSON.stringify(user),
+									);
+									alert("successfully logged in");
+									navigate("/dashboard");
+								})
+								.catch(() => {
+									alert("something went wrong");
+								});
 						}}
 						className="mx-8 flex w-lg flex-col items-center gap-4"
 					>

@@ -6,7 +6,7 @@ export function RegisterPage() {
 	const navigate = useNavigate();
 	return (
 		<div className="grid min-h-screen place-items-center">
-			<div className="grid min-h-4/5 min-w-4/5 grid-cols-[1fr_auto] flex-col justify-between overflow-hidden rounded-xl bg-white shadow shadow-black">
+			<div className="grid min-h-4/5 min-w-4/5 grid-cols-[1fr_auto] overflow-hidden rounded-xl bg-white shadow shadow-black">
 				<div className="flex flex-col items-end justify-center text-lg">
 					<form
 						onSubmit={async (e) => {
