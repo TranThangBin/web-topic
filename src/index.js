@@ -11,6 +11,7 @@ const MONGO_USER = process.env.MONGO_USER;
 const MONGO_PASS = process.env.MONGO_PASS;
 const MONGO_DATABASE = process.env.MONGO_DATABASE;
 const MONGO_USERS_COLLECTION = process.env.MONGO_USERS_COLLECTION;
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS.split(",");
 
 const missingUsernameError = new Error("required field username is missing");
 const missingPasswordError = new Error("required field password is missing");
@@ -36,7 +37,13 @@ const client = new mongodb.MongoClient(MONGO_URI, {
 const app = express();
 
 app.use(
-	cors({ origin: ["http://127.0.0.1:3000", "http://localhost:3000"] }),
+	cors({
+		origin: [
+			"http://127.0.0.1:3000",
+			"http://localhost:3000",
+			...ALLOWED_ORIGINS,
+		],
+	}),
 	express.json(),
 );
 
