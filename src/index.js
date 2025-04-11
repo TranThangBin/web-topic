@@ -45,6 +45,10 @@ app.use(
 		],
 	}),
 	express.json(),
+	(req, _, next) => {
+		console.log(req.originalUrl, req.method);
+		next();
+	},
 );
 
 app.post("/register", async (req, res, next) => {
