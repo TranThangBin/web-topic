@@ -132,20 +132,22 @@ app.post("/login", async (req, res, next) => {
 });
 
 app.use((err, _, res, __) => {
-	console.error(err);
 	if (
 		err === missingUsernameError ||
 		err === missingPasswordError ||
 		err === mismatchPasswordError ||
 		err === duplicatedUsernameError
 	) {
+		console.log(err);
 		res.status(400).json({ message: err.message });
 		return;
 	}
 	if (err === unauthorizedError) {
+		console.log(err);
 		res.status(401).json({ message: err.message });
 		return;
 	}
+	console.error(err);
 	res.status(500).end();
 });
 
