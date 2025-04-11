@@ -46,7 +46,7 @@ app.use(
 	}),
 	express.json(),
 	(req, _, next) => {
-		console.log(req.host, req.method);
+		console.log(req.host, req.method, req.originalUrl);
 		next();
 	},
 );
